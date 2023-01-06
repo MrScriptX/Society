@@ -7,4 +7,4 @@ target("society")
 
     add_includedirs("common/boost_1_81_0")
 
-    add_files("src/**.cpp")
+    add_files("src/main.cpp", "src/client.cpp")

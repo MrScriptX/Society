@@ -1,35 +1,31 @@
 #include <iostream>
+#include <string>
 
-#include <boost/array.hpp>
 #include <boost/asio.hpp>
 
-using boost::asio::ip::tcp;
+#include "client.h"
 
 int main(int argc, char* argv[])
 {
     boost::asio::thread_pool thread_pool(2);
 
-    boost::asio::io_context io_context;
-    tcp::resolver resolver(io_context);
-
-    tcp::resolver::results_type endpoints = resolver.resolve(argv[1], "daytime");
-
-    tcp::socket socket(io_context);
-    boost::asio::connect(socket, endpoints);
-
-    for (;;)
-    {
-      boost::array<char, 128> buf;
-      boost::system::error_code error;
-
-      size_t len = socket.read_some(boost::asio::buffer(buf), error);
-        if (error == boost::asio::error::eof)
-            break; // Connection closed cleanly by peer.
-        else if (error)
-            throw boost::system::system_error(error); // Some other error.
-
-      std::cout.write(buf.data(), len);
+    if(argc != 3){
+        std::cerr << "Usage: ./society <your_nickname> <multicast_address>" << std::endl;
+        std::exit(1);
     }
+
+    boost::asio::io_context io_context;
+    Client peer(io_context, argv[2], argv[1]);
+
+    boost::asio::post(thread_pool, [&]{
+        peer.receive();
+        io_context.run();
+    });
+    boost::asio::post(thread_pool, [&]{
+        peer.send();
+        io_context.run();
+    });
+    thread_pool.join();
 
     return 0;
 }
