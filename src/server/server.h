@@ -20,6 +20,7 @@ private:
     boost::asio::ip::tcp::acceptor m_acceptor;
 
     boost::asio::ip::tcp::socket m_socket;
+    boost::asio::ip::tcp::socket m_new_socket;
 
     std::array<char, 128> m_receiving_buffer;
     std::size_t m_maximum_message_size = 128;

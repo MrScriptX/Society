@@ -8,7 +8,6 @@ int main()
 
         boost::asio::io_context io_context;
         Server server(io_context);
-        // io_context.run();
 
         boost::asio::post(thread_pool, [&]{
             server.receive();
@@ -20,6 +19,7 @@ int main()
             io_context.run();
         });
 
+        io_context.run();
         thread_pool.join();
     }
     catch (std::exception &e)
