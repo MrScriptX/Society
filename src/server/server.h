@@ -6,6 +6,8 @@
 #include <boost/asio.hpp>
 #include <boost/bind/bind.hpp>
 
+#include "client.h"
+
 class Server
 {
 public:
@@ -20,12 +22,15 @@ private:
     boost::asio::ip::tcp::acceptor m_acceptor;
     boost::asio::ip::tcp::endpoint m_remote_endpoint;
 
-    boost::asio::ip::tcp::socket m_socket;
     boost::asio::ip::tcp::socket m_new_socket;
 
     std::array<char, 128> m_receiving_buffer;
     std::size_t m_maximum_message_size = 128;
     std::string m_name;
+
+    boost::asio::io_context& m_ctx;
+    std::vector<client> m_clients;
+    boost::asio::thread_pool thread_pool;
 };
 
 #endif
