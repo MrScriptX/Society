@@ -22,7 +22,7 @@ int main()
         io_context.run();
         thread_pool.join();
     }
-    catch (std::exception &e)
+    catch (const std::exception &e)
     {
         std::cerr << e.what() << std::endl;
     }

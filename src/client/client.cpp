@@ -8,6 +8,8 @@ Client::Client(boost::asio::io_context& ctx, const std::string& host) : m_socket
     tcp::resolver::results_type endpoints = resolver.resolve(host, "daytime");
 
     boost::asio::connect(m_socket, endpoints);
+
+    m_socket.send(boost::asio::buffer("client", m_maximum_message_size));
 }
 
 void Client::receive()

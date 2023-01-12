@@ -2,8 +2,6 @@
 
 #include "client.h"
 
-using boost::asio::ip::tcp;
-
 int main(int argc, char *argv[])
 {
     try
@@ -31,7 +29,7 @@ int main(int argc, char *argv[])
 
         thread_pool.join();
     }
-    catch (std::exception &e)
+    catch (const std::exception &e)
     {
         std::cerr << e.what() << std::endl;
     }

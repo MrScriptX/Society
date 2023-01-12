@@ -14,7 +14,7 @@ void Server::receive()
         if (!error_code.failed() && bytes_received > 0)
         {
             auto received_message_string = std::string(m_receiving_buffer.begin(), m_receiving_buffer.begin() + bytes_received);
-            std::cout << "other : ";
+            std::cout << m_name << " : ";
             std::cout.write(m_receiving_buffer.data(), bytes_received);
             std::cout << std::endl <<std::flush;
         }
@@ -48,6 +48,11 @@ void Server::handle_connexion(const boost::system::error_code &error)
     else
     {
         m_socket = std::move(m_new_socket); // cpy tmp socket
+
+        std::size_t bytes_received = m_socket.receive(boost::asio::buffer(m_receiving_buffer));
+        std::string received_message_string = std::string(m_receiving_buffer.begin(), m_receiving_buffer.begin() + bytes_received);
+        m_name = received_message_string;
+
         std::clog << "connexion established" << std::endl;
         accept_connexion();
     }
