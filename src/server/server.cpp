@@ -16,22 +16,20 @@ void Server::receive()
             auto received_message_string = std::string(m_receiving_buffer.begin(), m_receiving_buffer.begin() + bytes_received);
             std::cout.write(m_receiving_buffer.data(), bytes_received);
             std::cout << std::endl <<std::flush;
-            
-            receive();
         }
+
+        receive();
     });
 }
 
 void Server::send()
 {
-    // std::string name = m_name;
-    // std::string message;
-    // std::getline(std::cin, message);
-    // std::string buffer = name.append(": " + message);
-    // m_socket.async_send_to(boost::asio::buffer(buffer, m_maximum_message_size), m_remote_endpoint, [this, message](const boost::system::error_code& /*error_code*/, std::size_t bytes_sent){
-    //     std::cout << "You: " << message << std::endl;
-    //     send();
-    // });
+    std::string message;
+    std::getline(std::cin, message);
+    m_socket.async_send(boost::asio::buffer(message, m_maximum_message_size), [this, message](const boost::system::error_code& /*error_code*/, std::size_t bytes_sent){
+        std::cout << "You: " << message << std::endl;
+        send();
+    });
 }
 
 void Server::accept_connexion()
@@ -41,6 +39,13 @@ void Server::accept_connexion()
 
 void Server::handle_connexion(const boost::system::error_code &error)
 {
-    receive();
-    accept_connexion();
+    if (error)
+    {
+        std::cerr << error.message() << std::endl;
+        return;
+    }
+
+    std::clog << "connexion established" << std::endl;
+    // receive();
+    // accept_connexion();
 }

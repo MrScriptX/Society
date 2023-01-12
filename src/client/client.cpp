@@ -19,20 +19,18 @@ void Client::receive()
             auto received_message_string = std::string(m_receiving_buffer.begin(), m_receiving_buffer.begin() + bytes_received);
             std::cout.write(m_receiving_buffer.data(), bytes_received);
             std::cout << std::endl <<std::flush;
-            
-            receive();
         }
+
+        receive();
     });
 }
 
 void Client::send()
 {
     std::string message;
-    while(std::getline(std::cin, message))
-    {
-        m_socket.async_send(boost::asio::buffer(message, m_maximum_message_size), [this, message](const boost::system::error_code& /*error_code*/, std::size_t bytes_sent){
-            std::cout << "You: " << message << std::endl;
-            send();
-        });
-    }
+    std::getline(std::cin, message);
+    m_socket.async_send(boost::asio::buffer(message, m_maximum_message_size), [this, message](const boost::system::error_code& /*error_code*/, std::size_t bytes_sent){
+        std::cout << "You: " << message << std::endl;
+        send();
+    });
 }
