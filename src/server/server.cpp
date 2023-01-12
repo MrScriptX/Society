@@ -7,6 +7,11 @@ Server::Server(boost::asio::io_context& ctx) : m_ctx(ctx), m_new_socket(ctx), m_
     accept_connexion();
 }
 
+Server::~Server()
+{
+    thread_pool.join();
+}
+
 void Server::accept_connexion()
 {
     m_acceptor.async_accept(m_new_socket, boost::bind(&Server::handle_connexion, this, boost::asio::placeholders::error));
@@ -22,11 +27,10 @@ void Server::handle_connexion(const boost::system::error_code &error)
     else
     {
         client tmp{ "", std::move(m_new_socket) };
-        // m_socket = std::move(m_new_socket); // cpy tmp socket
+
 
         std::size_t bytes_received = tmp.socket.receive(boost::asio::buffer(m_receiving_buffer));
         std::string received_message_string = std::string(m_receiving_buffer.begin(), m_receiving_buffer.begin() + bytes_received);
-        // m_name = received_message_string;
         tmp.name = received_message_string;
 
         m_clients.push_back(std::move(tmp));

@@ -12,6 +12,7 @@ class Server
 {
 public:
     Server(boost::asio::io_context& ctx);
+    ~Server();
 
     void receive();
     void send();
