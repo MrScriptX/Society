@@ -28,7 +28,6 @@ void Server::handle_connexion(const boost::system::error_code &error)
     {
         client tmp{ "", std::move(m_new_socket) };
 
-
         std::size_t bytes_received = tmp.socket.receive(boost::asio::buffer(m_receiving_buffer));
         std::string received_message_string = std::string(m_receiving_buffer.begin(), m_receiving_buffer.begin() + bytes_received);
         tmp.name = received_message_string;
