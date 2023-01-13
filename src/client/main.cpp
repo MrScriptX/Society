@@ -8,14 +8,14 @@ int main(int argc, char *argv[])
     {
         boost::asio::thread_pool thread_pool(2);
 
-        if (argc != 2)
+        if (argc != 3)
         {
-            std::cerr << "Usage: client <host>" << std::endl;
+            std::cerr << "Usage: client <host> <username>" << std::endl;
             return 1;
         }
 
         boost::asio::io_context io_context;
-        Client client(io_context, argv[1]);
+        Client client(io_context, argv[1], argv[2]);
 
         boost::asio::post(thread_pool, [&]{
             client.receive();

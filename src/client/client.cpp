@@ -2,14 +2,14 @@
 
 using boost::asio::ip::tcp;
 
-Client::Client(boost::asio::io_context& ctx, const std::string& host) : m_socket(ctx)
+Client::Client(boost::asio::io_context& ctx, const std::string& host, const std::string& username) : m_socket(ctx)
 {
     tcp::resolver resolver(ctx);
     tcp::resolver::results_type endpoints = resolver.resolve(host, "daytime");
 
     boost::asio::connect(m_socket, endpoints);
 
-    m_socket.send(boost::asio::buffer("client", m_maximum_message_size));
+    m_socket.send(boost::asio::buffer(username, m_maximum_message_size));
 }
 
 void Client::receive()
