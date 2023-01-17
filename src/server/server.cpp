@@ -2,7 +2,7 @@
 
 using boost::asio::ip::tcp;
 
-Server::Server(boost::asio::io_context& ctx) : m_ctx(ctx), m_new_socket(ctx), m_acceptor(ctx, tcp::endpoint(tcp::v4(), 13)), thread_pool(10)
+Server::Server(boost::asio::io_context& ctx) : m_ctx(ctx), m_new_socket(ctx), m_acceptor(ctx, tcp::endpoint(tcp::v4(), 13)), thread_pool(48)
 {
     accept_connexion();
 
@@ -43,14 +43,9 @@ void Server::handle_connexion(const boost::system::error_code &error)
 
         client* t = m_clients[last].get();
         boost::asio::post(thread_pool, [this, t] {
-            t->receive();
+            t->receive(this->m_clients);
             m_ctx.run();
         });
- 
-        // boost::asio::post(thread_pool, [this, &t]{
-        //     t->send();
-        //     m_ctx.run();
-        // });
 
         accept_connexion();
     }
@@ -58,8 +53,6 @@ void Server::handle_connexion(const boost::system::error_code &error)
 
 void Server::send()
 {
-    std::clog << "Server::send" << std::endl;
-
     std::string message;
     std::getline(std::cin, message);
     for (size_t i = 0; i < m_clients.size(); i++)
