@@ -3,6 +3,7 @@
 
 #include <string>
 #include <iostream>
+#include <memory>
 #include <boost/asio.hpp>
 #include <boost/bind/bind.hpp>
 
@@ -30,7 +31,7 @@ private:
     std::string m_name;
 
     boost::asio::io_context& m_ctx;
-    std::vector<client> m_clients;
+    std::vector<std::unique_ptr<client>> m_clients;
     boost::asio::thread_pool thread_pool;
 };
 

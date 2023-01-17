@@ -26,24 +26,24 @@ void Server::handle_connexion(const boost::system::error_code &error)
     }
     else
     {
-        client tmp{ "", std::move(m_new_socket) };
+        m_clients.push_back(std::make_unique<client>(m_new_socket));
 
-        std::size_t bytes_received = tmp.socket.receive(boost::asio::buffer(m_receiving_buffer));
+        size_t last = m_clients.size() - 1;
+
+        std::size_t bytes_received =  m_clients[last]->socket.receive(boost::asio::buffer(m_receiving_buffer));
         std::string received_message_string = std::string(m_receiving_buffer.begin(), m_receiving_buffer.begin() + bytes_received);
-        tmp.name = received_message_string;
-
-        m_clients.push_back(std::move(tmp));
+        m_clients[last]->name = received_message_string;
 
         std::clog << "connexion established" << std::endl;
 
-        client& t = m_clients[m_clients.size() - 1];
-        boost::asio::post(thread_pool, [this, &t] {
-            t.receive();
+        client* t = m_clients[last].get();
+        boost::asio::post(thread_pool, [this, t] {
+            t->receive();
             m_ctx.run();
         });
  
         boost::asio::post(thread_pool, [this, &t]{
-            t.send();
+            t->send();
             m_ctx.run();
         });
 

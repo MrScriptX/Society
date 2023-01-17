@@ -12,6 +12,11 @@ Client::Client(boost::asio::io_context& ctx, const std::string& host, const std:
     m_socket.send(boost::asio::buffer(username, m_maximum_message_size));
 }
 
+Client::~Client()
+{
+    m_socket.close();
+}
+
 void Client::receive()
 {
     m_socket.async_receive(boost::asio::buffer(m_receiving_buffer), [this](const boost::system::error_code& error_code, std::size_t bytes_received)

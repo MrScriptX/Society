@@ -8,6 +8,7 @@ class Client
 {
 public:
     Client(boost::asio::io_context& ctx, const std::string& host, const std::string& username);
+    ~Client();
 
     void receive();
     void send();

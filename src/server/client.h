@@ -5,8 +5,11 @@
 #include <iostream>
 #include <boost/asio/ip/tcp.hpp>
 
-struct client
+class client
 {
+public:
+    client(boost::asio::ip::tcp::socket& _socket);
+
     std::string name;
     boost::asio::ip::tcp::socket socket;
 
