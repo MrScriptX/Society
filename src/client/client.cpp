@@ -24,7 +24,6 @@ void Client::receive()
         if (!error_code.failed() && bytes_received > 0)
         {
             auto received_message_string = std::string(m_receiving_buffer.begin(), m_receiving_buffer.begin() + bytes_received);
-            std::cout << "other : ";
             std::cout.write(m_receiving_buffer.data(), bytes_received);
             std::cout << std::endl <<std::flush;
         }

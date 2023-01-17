@@ -10,9 +10,12 @@ void client::receive(const std::vector<std::unique_ptr<client>>& clients)
     {
         if (!error_code.failed() && bytes_received > 0)
         {
-            auto received_message_string = std::string(m_receiving_buffer.begin(), m_receiving_buffer.begin() + bytes_received);
+            auto received_message_string = name + " : " + std::string(m_receiving_buffer.begin(), m_receiving_buffer.begin() + bytes_received);
             for (size_t i = 0; i < clients.size(); i++)
             {
+                if (clients[i]->name == name)
+                    continue;
+
                 clients[i]->send(received_message_string);
             }
 

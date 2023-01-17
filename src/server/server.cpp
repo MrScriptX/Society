@@ -55,9 +55,10 @@ void Server::send()
 {
     std::string message;
     std::getline(std::cin, message);
+    std::string buffer = "server : " + message;
     for (size_t i = 0; i < m_clients.size(); i++)
     {
-        m_clients[i]->send(message);
+        m_clients[i]->send(buffer);
     }
 
     send();
