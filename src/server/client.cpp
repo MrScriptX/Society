@@ -30,12 +30,8 @@ void client::receive()
     });
 }
 
-void client::send()
+void client::send(const std::string& message)
 {
-    std::string message;
-    std::getline(std::cin, message);
     socket.async_send(boost::asio::buffer(message, m_maximum_message_size), [this, message](const boost::system::error_code& /*error_code*/, std::size_t bytes_sent){
-        // std::cout << "You: " << message << std::endl;
-        send();
     });
 }

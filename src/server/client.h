@@ -5,9 +5,8 @@
 #include <iostream>
 #include <boost/asio/ip/tcp.hpp>
 
-class client
+struct client
 {
-public:
     client(boost::asio::ip::tcp::socket& _socket);
 
     std::string name;
@@ -17,7 +16,7 @@ public:
     std::size_t m_maximum_message_size = 128;
 
     void receive();
-    void send();
+    void send(const std::string& message);
 };
 
 #endif
