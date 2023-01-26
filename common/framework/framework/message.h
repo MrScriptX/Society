@@ -2,6 +2,9 @@
 #define SOCIETY_MESSAGE_H
 
 #include <string>
+#include <format>
+#include <vector>
+#include <iostream>
 
 namespace society
 {
@@ -12,6 +15,9 @@ namespace society
         std::string name; // client name
         std::string text; // body of the message
         uint32_t timestamp; // message send time
+
+        const std::string to_string() const noexcept;
+        void parse(const std::string& str) noexcept;
     };
 }
 

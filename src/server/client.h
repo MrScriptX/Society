@@ -9,7 +9,10 @@ struct client
 {
     client(boost::asio::ip::tcp::socket& _socket);
 
+    int16_t id;
+    std::string secret;
     std::string name;
+    std::string address;
     boost::asio::ip::tcp::socket socket;
 
     std::array<char, 128> m_receiving_buffer;

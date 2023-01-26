@@ -7,6 +7,7 @@
 #include <format>
 #include <boost/asio.hpp>
 #include <boost/bind/bind.hpp>
+#include <framework/message.h>
 
 #include "client.h"
 

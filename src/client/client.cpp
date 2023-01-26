@@ -11,7 +11,14 @@ Client::Client(boost::asio::io_context& ctx, const std::string& host, const std:
 
     boost::asio::connect(m_socket, endpoints);
 
-    m_socket.send(boost::asio::buffer(username, m_maximum_message_size));
+    society::message init_message;
+    init_message.text = "first message";
+    init_message.name = username;
+
+    auto now = std::chrono::time_point_cast<std::chrono::seconds>(std::chrono::system_clock::now());
+    init_message.timestamp = now.time_since_epoch().count();
+
+    m_socket.send(boost::asio::buffer(init_message.to_string(), m_maximum_message_size));
 
     std::clog << std::format("connected to [{}]\n\n", m_socket.remote_endpoint().address().to_string());
     std::clog << std::endl;

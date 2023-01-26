@@ -3,7 +3,9 @@
 
 #include <iostream>
 #include <format>
+#include <chrono>
 #include <boost/asio.hpp>
+#include <framework/message.h>
 
 class Client
 {
@@ -17,8 +19,8 @@ private:
     boost::asio::ip::tcp::socket m_socket;
     std::string m_name;
 
-    std::size_t m_maximum_message_size = 128;
-    std::array<char, 128> m_receiving_buffer;
+    std::size_t m_maximum_message_size = 256;
+    std::array<char, 256> m_receiving_buffer;
     boost::asio::ip::tcp::endpoint m_remote_endpoint;
 };
 
