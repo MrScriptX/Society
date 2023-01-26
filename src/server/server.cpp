@@ -4,6 +4,8 @@ using boost::asio::ip::tcp;
 
 Server::Server(boost::asio::io_context& ctx) : m_ctx(ctx), m_new_socket(ctx), m_acceptor(ctx, tcp::endpoint(tcp::v4(), 13)), thread_pool(48)
 {
+    std::clog << "server started..." << std::endl;
+
     accept_connexion();
 
     boost::asio::post(thread_pool, [&] {
@@ -39,7 +41,7 @@ void Server::handle_connexion(const boost::system::error_code &error)
         std::string received_message_string = std::string(m_receiving_buffer.begin(), m_receiving_buffer.begin() + bytes_received);
         m_clients[last]->name = received_message_string;
 
-        std::clog << "connexion established" << std::endl;
+        std::clog << std::format("connexion established [{}] [{}]", m_clients[last]->name, m_clients[last]->socket.remote_endpoint().address().to_string()) << std::endl;
 
         client* t = m_clients[last].get();
         boost::asio::post(thread_pool, [this, t] {

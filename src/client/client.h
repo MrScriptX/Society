@@ -2,6 +2,7 @@
 #define SOCIETY_CLIENT_H
 
 #include <iostream>
+#include <format>
 #include <boost/asio.hpp>
 
 class Client

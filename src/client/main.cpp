@@ -1,18 +1,21 @@
 #include <iostream>
 
+#include "constant.h"
 #include "client.h"
 
 int main(int argc, char *argv[])
 {
+    if (argc != 3)
+    {
+        std::cerr << "Usage: client <host> <username>" << std::endl;
+        return 1;
+    }
+
+    std::cout << message::welcome << std::endl;
+
     try
     {
         boost::asio::thread_pool thread_pool(2);
-
-        if (argc != 3)
-        {
-            std::cerr << "Usage: client <host> <username>" << std::endl;
-            return 1;
-        }
 
         boost::asio::io_context io_context;
         Client client(io_context, argv[1], argv[2]);

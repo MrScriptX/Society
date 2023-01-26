@@ -1,11 +1,12 @@
+#include "constant.h"
 #include "server.h"
 
 int main()
 {
+    std::cout << message::welcome << std::endl;
+
     try
     {
-        // boost::asio::thread_pool thread_pool(1);
-
         boost::asio::io_context io_context;
         Server server(io_context);
 

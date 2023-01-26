@@ -2,8 +2,15 @@ set_languages("c++23")
 
 add_rules("mode.debug", "mode.release")
 
+target("framework")
+    set_kind("static")
+    add_files("common/framework/**.cpp")
+target_end()
+
 target("server")
     set_kind("binary")
+
+    add_deps("framework")
 
     add_includedirs("common/boost_1_81_0")
 
@@ -12,6 +19,8 @@ target_end()
 
 target("client")
     set_kind("binary")
+
+    add_deps("framework")
 
     add_includedirs("common/boost_1_81_0")
 
