@@ -67,10 +67,18 @@ void Server::send()
 {
     std::string message;
     std::getline(std::cin, message);
-    std::string buffer = "server : " + message;
+
+    society::message msg;
+    msg.id = 9999;
+    msg.name = "server";
+    msg.text = message;
+
+    auto now = std::chrono::time_point_cast<std::chrono::seconds>(std::chrono::system_clock::now());
+    msg.timestamp = now.time_since_epoch().count();
+
     for (size_t i = 0; i < m_clients.size(); i++)
     {
-        m_clients[i]->send(buffer);
+        m_clients[i]->send(msg.to_string());
     }
 
     send();

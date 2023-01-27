@@ -6,6 +6,7 @@
 #include <chrono>
 #include <boost/asio.hpp>
 #include <framework/message.h>
+#include <framework/clock.h>
 
 class Client
 {
@@ -19,8 +20,8 @@ private:
     boost::asio::ip::tcp::socket m_socket;
     std::string m_name;
 
-    std::size_t m_maximum_message_size = 256;
-    std::array<char, 256> m_receiving_buffer;
+    std::size_t m_maximum_message_size = 512;
+    std::array<char, 512> m_receiving_buffer;
     boost::asio::ip::tcp::endpoint m_remote_endpoint;
 };
 

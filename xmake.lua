@@ -2,6 +2,10 @@ set_languages("c++23")
 
 add_rules("mode.debug", "mode.release")
 
+if is_plat("windows") then
+    add_defines("WIN32")
+end
+
 target("framework")
     set_kind("static")
 

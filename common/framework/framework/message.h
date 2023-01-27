@@ -6,6 +6,8 @@
 #include <vector>
 #include <iostream>
 
+#include "clock.h"
+
 namespace society
 {
     struct message
@@ -18,6 +20,7 @@ namespace society
 
         const std::string to_string() const noexcept;
         void parse(const std::string& str) noexcept;
+        void print() const noexcept;
     };
 }
 

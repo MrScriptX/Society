@@ -19,3 +19,28 @@ void society::message::parse(const std::string& str) noexcept
     text = result[3];
     timestamp = std::stoi(result[4]);
 }
+
+#ifdef WIN32
+#include <windows.h>
+
+void society::message::print() const noexcept
+{
+    HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
+
+    SetConsoleTextAttribute(console, FOREGROUND_BLUE | FOREGROUND_GREEN);
+    std::cout << std::format("[{}]", society::clock::parse_time_sec(timestamp));
+
+    SetConsoleTextAttribute(console, FOREGROUND_RED | FOREGROUND_GREEN);
+    std::cout << std::format("{} : ", name);
+
+    SetConsoleTextAttribute(console, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+    std::cout << std::format("{}", text);
+
+    std::cout << std::endl <<std::flush;
+}
+#else
+void society::message::print() const noexcept
+{
+
+}
+#endif
